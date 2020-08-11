@@ -8,6 +8,9 @@ $pdo = new PDO('sqlite:'.$databasePath);
 
 $student = new Student(null, 'Willian', new \DateTimeImmutable('1997-10-15'));
 
-$sqlInsert = "INSERT INTO students (name, birth_date) VALUES ('{$student->name()}','{$student->birthDate()->format('y-m-d')}');";
-
+$sqlInsert = "INSERT INTO students (name, birth_date) VALUES (?, ? );";
+$statement = $pdo->prepare($sqlInsert);
+$statement->bindValue(1, $student->name());
+$statement->bindValue(2, $student->birthDate()->format('Y-m-d'));
+$statement->execute();
 var_dump($pdo ->exec($sqlInsert));
